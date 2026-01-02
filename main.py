@@ -14,6 +14,7 @@ except ImportError:
 # Configuration for Single Panel
 DISPLAY_WIDTH = 64
 DISPLAY_HEIGHT = 64
+BRIGHTNESS = 1 # 0.0 to 1.0
 
 def load_image_to_array(filepath):
     """
@@ -39,9 +40,14 @@ def main():
     print("Initializing Single 64x64 RGB Matrix...")
     
     # Load Bowser image first to use as framebuffer
-    image_path = os.path.join("images", "Bowser.png")
+    image_path = os.path.join("images", "peach.png")
     print(f"Loading {image_path}...")
     framebuffer = load_image_to_array(image_path)
+
+    # Apply brightness
+    if BRIGHTNESS < 1.0:
+        print(f"Applying brightness: {BRIGHTNESS}")
+        framebuffer[:] = (framebuffer.astype(np.float32) * BRIGHTNESS).astype(np.uint8)
 
     # Initialize the geometry
     geometry = piomatter.Geometry(
